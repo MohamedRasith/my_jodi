@@ -6,9 +6,14 @@ import 'package:my_jodi/common_widgets/custom_spacer_widget.dart';
 import 'package:my_jodi/sign_up.dart';
 import 'package:my_jodi/utils/constants.dart';
 import 'package:my_jodi/utils/fonts.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
-void main() {
+void main() async{
   runApp(const MyApp());
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -87,7 +92,6 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     TextEditingController username = TextEditingController();
-    TextEditingController password = TextEditingController();
     return WillPopScope(
         onWillPop: _onWillPop,
         child:Scaffold(
@@ -121,25 +125,15 @@ class _LoginScreenState extends State<LoginScreen> {
                 child:Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Email", style: AppFonts.extraBoldStyle(fontColor: Colors.black,fontSize: 15),),
+                    Text("Mobile Number", style: AppFonts.extraBoldStyle(fontColor: Colors.black,fontSize: 15),),
                     TextField(
                         controller: username,
                         decoration: const InputDecoration(
-                          icon: Icon(Icons.people,color: Colors.black,),
+                          icon: Icon(Icons.mobile_friendly,color: Colors.black,),
                           focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Colors.black, width: 2)),//icon at head of input
                         )
                     ),
                     const CustomSpacerWidget(height: 20,),
-                    Text("Password", style: AppFonts.extraBoldStyle(fontColor: Colors.black,fontSize: 15),),
-                    TextField(
-                        controller: password,
-                        decoration: const InputDecoration(
-                            icon: Icon(Icons.lock,color: Colors.black,), //icon at head of input
-                            focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Colors.black, width: 2)),
-                            //prefixIcon: Icon(Icons.people), //you can use prefixIcon property too.
-                            suffixIcon: Icon(Icons.remove_red_eye,color: Colors.black,) //icon at ,// tail of input
-                        )
-                    ),
                   ],
                 )
             ),

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "331633196228",
+    "project_id": "myjodi-c45b0",
+    "storage_bucket": "myjodi-c45b0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:331633196228:android:2883c6cba591aaee31dd91",
+        "android_client_info": {
+          "package_name": "com.MyJodi.my_jodi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "331633196228-sj76pk2hcfnfd0m0kqtohf46lkf0nl1v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.MyJodi.my_jodi",
+            "certificate_hash": "74a0bdd0cded1c5bde7be78f37aebd0e65a93199"
+          }
+        },
+        {
+          "client_id": "331633196228-7r5hiubou9rij6rpf8ojf5k6t8rm458v.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDkHoiMsfkiIVYBxEuLzfoP9GwtRGskuaE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "331633196228-7r5hiubou9rij6rpf8ojf5k6t8rm458v.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
