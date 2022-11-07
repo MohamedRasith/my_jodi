@@ -1,5 +1,8 @@
+// ignore_for_file: use_build_context_synchronously
+
 import 'dart:async';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:my_jodi/Dashboard.dart';
 import 'package:my_jodi/common_widgets/custom_spacer_widget.dart';
@@ -41,7 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ()=>Navigator.pushReplacement(context,
             MaterialPageRoute(builder:
                 (context) =>
-                const LoginScreen()
+            const LoginScreen()
             )
         )
     );
@@ -95,116 +98,125 @@ class _LoginScreenState extends State<LoginScreen> {
     return WillPopScope(
         onWillPop: _onWillPop,
         child:Scaffold(
-      appBar: AppBar(title:Text("Login",style: AppFonts.extraBoldStyle(fontSize: 20,fontColor: AppColors.backgroundColorF5),
-      ),
-      backgroundColor: AppColors.blackColor,
-        automaticallyImplyLeading: false,
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Center(
-              child:Image.asset("assets/images/matrimony.png",width: 200,height: 200,),
+            appBar: AppBar(title:Text("Login",style: AppFonts.extraBoldStyle(fontSize: 20,fontColor: AppColors.backgroundColorF5),
             ),
-            Container(
-                width: double.maxFinite,
-                padding: const EdgeInsets.all(10),
-                margin: const EdgeInsets.all(10),
-                decoration: BoxDecoration(
-                  color: AppColors.whiteFF,
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: AppColors.blackColor.withOpacity(.25),
-                      offset: const Offset(0, 1),
-                      blurRadius: 5,
-                    ),
-                  ],
-                ),
-                child:Column(
+              backgroundColor: AppColors.blackColor,
+              automaticallyImplyLeading: false,
+            ),
+            body: SingleChildScrollView(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Mobile Number", style: AppFonts.extraBoldStyle(fontColor: Colors.black,fontSize: 15),),
-                    TextField(
-                        controller: username,
-                        decoration: const InputDecoration(
-                          icon: Icon(Icons.mobile_friendly,color: Colors.black,),
-                          focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Colors.black, width: 2)),//icon at head of input
+                    Center(
+                      child:Image.asset("assets/images/matrimony.png",width: 200,height: 200,),
+                    ),
+                    Container(
+                        width: double.maxFinite,
+                        padding: const EdgeInsets.all(10),
+                        margin: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: AppColors.whiteFF,
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: AppColors.blackColor.withOpacity(.25),
+                              offset: const Offset(0, 1),
+                              blurRadius: 5,
+                            ),
+                          ],
+                        ),
+                        child:Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text("Mobile Number", style: AppFonts.extraBoldStyle(fontColor: Colors.black,fontSize: 15),),
+                            TextField(
+                                controller: username,
+                                decoration: const InputDecoration(
+                                  icon: Icon(Icons.mobile_friendly,color: Colors.black,),
+                                  focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Colors.black, width: 2)),//icon at head of input
+                                )
+                            ),
+                            const CustomSpacerWidget(height: 20,),
+                          ],
                         )
                     ),
-                    const CustomSpacerWidget(height: 20,),
+                    Center(
+                        child:GestureDetector(
+                          onTap: () async {
+                            await FirebaseAuth.instance.verifyPhoneNumber(
+                              phoneNumber: '+91${username.text}',
+                              verificationCompleted: (PhoneAuthCredential credential) {},
+                              verificationFailed: (FirebaseAuthException e) {},
+                              codeSent: (String verificationId, int? resendToken) {},
+                              codeAutoRetrievalTimeout: (String verificationId) {},
+                            );
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Dashboard()));
+                            },
+                          child: Container(
+                              width: 150,
+                              height: 50,
+                              padding: const EdgeInsets.all(10),
+                              margin: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: AppColors.blackColor,
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.blackColor.withOpacity(.25),
+                                    offset: const Offset(0, 1),
+                                    blurRadius: 5,
+                                  ),
+                                ],
+                              ),
+                              child: Center(
+                                  child: Text("Login",style: AppFonts.extraBoldStyle(fontColor: Colors.white,fontSize: 15),)
+                              )
+                          ),
+                        )),
+                    Center(
+                        child: Text("If you are new User, Please",style: AppFonts.regularStyle(fontColor: AppColors.blackColor, fontSize: 12),)
+                    ),
+                    Center(
+                        child:GestureDetector(
+                          onTap: (){
+                            Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>
+                            const SignUp()));
+                          },
+                          child: Container(
+                              width: 150,
+                              height: 50,
+                              padding: const EdgeInsets.all(10),
+                              margin: const EdgeInsets.all(10),
+                              decoration: BoxDecoration(
+                                color: AppColors.blackColor,
+                                borderRadius: BorderRadius.circular(12),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: AppColors.blackColor.withOpacity(.25),
+                                    offset: const Offset(0, 1),
+                                    blurRadius: 5,
+                                  ),
+                                ],
+                              ),
+                              child: Center(
+                                  child: Text("Sign Up",style: AppFonts.extraBoldStyle(fontColor: Colors.white,fontSize: 15),)
+                              )
+                          ),
+                        )),
+                    Center(
+                        child: Text("--------- OR Login Via ---------",style: AppFonts.regularStyle(fontColor: Colors.black,fontSize: 15),)
+                    ),
+                    const CustomSpacerWidget(height: 10,),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Image.asset("assets/images/google.png",width: 50,height: 50,),
+                        Image.asset("assets/images/fb.png",width: 50,height: 50,)
+                      ],
+                    )
                   ],
                 )
-            ),
-            Center(
-              child:GestureDetector(
-                onTap: (){Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const Dashboard()));},
-                child: Container(
-                    width: 150,
-                    height: 50,
-                    padding: const EdgeInsets.all(10),
-                    margin: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: AppColors.blackColor,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.blackColor.withOpacity(.25),
-                          offset: const Offset(0, 1),
-                          blurRadius: 5,
-                        ),
-                      ],
-                    ),
-                    child: Center(
-                        child: Text("Login",style: AppFonts.extraBoldStyle(fontColor: Colors.white,fontSize: 15),)
-                    )
-                ),
-              )),
-            Center(
-                child: Text("If you are new User, Please",style: AppFonts.regularStyle(fontColor: AppColors.blackColor, fontSize: 12),)
-            ),
-            Center(
-              child:GestureDetector(
-                onTap: (){
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) =>
-                  const SignUp()));
-                },
-                child: Container(
-                    width: 150,
-                    height: 50,
-                    padding: const EdgeInsets.all(10),
-                    margin: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: AppColors.blackColor,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.blackColor.withOpacity(.25),
-                          offset: const Offset(0, 1),
-                          blurRadius: 5,
-                        ),
-                      ],
-                    ),
-                    child: Center(
-                        child: Text("Sign Up",style: AppFonts.extraBoldStyle(fontColor: Colors.white,fontSize: 15),)
-                    )
-                ),
-              )),
-            Center(
-              child: Text("--------- OR Login Via ---------",style: AppFonts.regularStyle(fontColor: Colors.black,fontSize: 15),)
-            ),
-            const CustomSpacerWidget(height: 10,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                Image.asset("assets/images/google.png",width: 50,height: 50,),
-                Image.asset("assets/images/fb.png",width: 50,height: 50,)
-              ],
             )
-          ],
-        )
-      )
-    ))  ;
+        ))  ;
   }
 }
