@@ -1,6 +1,7 @@
 // ignore_for_file: import_of_legacy_library_into_null_safe
 
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_profile_picture/flutter_profile_picture.dart';
 import 'package:image_picker/image_picker.dart';
@@ -106,9 +107,9 @@ class _DashboardState extends State<Dashboard> {
 }
 class Page1 extends StatelessWidget {
   const Page1({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
+    final Stream<QuerySnapshot> usersStream = FirebaseFirestore.instance.collection('Customer Details').snapshots();
     return SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -134,58 +135,70 @@ class Page1 extends StatelessWidget {
         Padding(padding: const EdgeInsets.only(left: 10),
           child:Text("Hai, User",style: AppFonts.extraBoldStyle(fontSize: 25,fontColor: AppColors.blackColor),)),
             const CustomSpacerWidget(height: 10),
-        ListView.separated(
-          shrinkWrap: true,
-          padding: EdgeInsets.zero,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            return GestureDetector(
-                onTap: (){
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const ViewDemo()));
-                },
-                child: Container(
-                    width: double.maxFinite,
-                    padding: const EdgeInsets.all(10),
-                    margin: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      color: AppColors.whiteFF,
-                      borderRadius: BorderRadius.circular(12),
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.blackColor.withOpacity(.25),
-                          offset: const Offset(0, 1),
-                          blurRadius: 5,
-                        ),
-                      ],
-                    ),
-                    child:Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Image.asset("assets/images/profile.png",width: 150,height: 150,),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text("Name :  XXXXXXX", style: AppFonts.regularStyle(fontColor: Colors.black,fontSize: 15),),
-                            const CustomSpacerWidget(height: 10),
-                            Text("Age : XX", style: AppFonts.regularStyle(fontColor: Colors.black,fontSize: 15),),
-                            const CustomSpacerWidget(height: 10),
-                            Text("Religion : XXXXXX", style: AppFonts.regularStyle(fontColor: Colors.black,fontSize: 15),),
-                            const CustomSpacerWidget(height: 10),
-                            Text("Location : XXXXXX", style: AppFonts.regularStyle(fontColor: Colors.black,fontSize: 15),),
-                          ],
+      SizedBox(
+        width: double.maxFinite,
+        height: double.maxFinite,
+        child: StreamBuilder<QuerySnapshot>(
+          stream: usersStream,
+          builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            if (snapshot.hasError) {
+              return const Text('Something went wrong');
+            }
+
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(child: CircularProgressIndicator());
+            }
+            if(snapshot.data!.docs.isEmpty){
+              return const Center(child: Text('No Data',style: TextStyle(fontSize: 20,color: Colors.white),),);
+            }
+            return ListView(
+              children: snapshot.data!.docs.map((DocumentSnapshot document) {
+                Map<String, dynamic> data = document.data()! as Map<String, dynamic>;
+                return GestureDetector(
+                        onTap: (){
+                          Navigator.pushReplacement(context, MaterialPageRoute(builder: (context)=> const ViewDemo()));
+                        },
+                        child: Container(
+                            width: double.maxFinite,
+                            padding: const EdgeInsets.all(10),
+                            margin: const EdgeInsets.all(10),
+                            decoration: BoxDecoration(
+                              color: AppColors.whiteFF,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: AppColors.blackColor.withOpacity(.25),
+                                  offset: const Offset(0, 1),
+                                  blurRadius: 5,
+                                ),
+                              ],
+                            ),
+                            child:Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Image.asset("assets/images/profile.png",width: 150,height: 150,),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text("Name : " + data["First Name"] + " " + data["Last Name"], style: AppFonts.regularStyle(fontColor: Colors.black,fontSize: 15),),
+                                    const CustomSpacerWidget(height: 10),
+                                    Text("Age : " + data["Age"], style: AppFonts.regularStyle(fontColor: Colors.black,fontSize: 15),),
+                                    const CustomSpacerWidget(height: 10),
+                                    Text("Religion : "+data["Religion"], style: AppFonts.regularStyle(fontColor: Colors.black,fontSize: 15),),
+                                    const CustomSpacerWidget(height: 10),
+                                    Text("Location : "+data["Address"], style: AppFonts.regularStyle(fontColor: Colors.black,fontSize: 15),),
+                                  ],
+                                )
+                              ],
+                            )
                         )
-                      ],
-                    )
-                )
+                    );
+              }).toList(),
             );
           },
-          separatorBuilder: (context, index) {
-            return const CustomSpacerWidget(
-              height: 10,
-            );
-          },
-          itemCount: 8,
         ),
+      )
+
           ],
         )
     );

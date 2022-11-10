@@ -34,6 +34,7 @@ class _SignUpState extends State<SignUp> {
     TextEditingController caste = TextEditingController();
     TextEditingController qualification = TextEditingController();
     TextEditingController email = TextEditingController();
+    TextEditingController age = TextEditingController();
     ImagePicker picker = ImagePicker();
     return WillPopScope(
         onWillPop: _onWillPop,
@@ -162,6 +163,15 @@ class _SignUpState extends State<SignUp> {
                             )
                         ),
                         const CustomSpacerWidget(height: 20,),
+                        Text("Age", style: AppFonts.extraBoldStyle(fontColor: Colors.black,fontSize: 15),),
+                        TextField(
+                            controller: age,
+                            decoration: const InputDecoration(
+                              icon: Icon(Icons.person,color: Colors.black,),
+                              focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Colors.black, width: 2)),//icon at head of input
+                            )
+                        ),
+                        const CustomSpacerWidget(height: 20,),
                       ],
                     )
                 ),
@@ -185,6 +195,7 @@ class _SignUpState extends State<SignUp> {
                           "Address":address.text,
                           "Religion":religion.text,
                           "Caste":caste.text,
+                          "Age":age.text,
                           "Qualification":qualification.text,
                           "Email":email.text});
                         Fluttertoast.showToast(
