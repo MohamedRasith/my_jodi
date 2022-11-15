@@ -132,7 +132,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             TextField(
                                 controller: username,
                                 decoration: const InputDecoration(
-                                  icon: Icon(Icons.mobile_friendly,color: Colors.black,),
+                                  icon: Icon(Icons.phone,color: Colors.black,),
                                   focusedBorder: OutlineInputBorder(borderRadius: BorderRadius.all(Radius.circular(10)),borderSide: BorderSide(color: Colors.black, width: 2)),//icon at head of input
                                 )
                             ),
