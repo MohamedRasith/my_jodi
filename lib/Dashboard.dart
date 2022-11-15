@@ -149,7 +149,7 @@ class Page1 extends StatelessWidget {
               return const Center(child: CircularProgressIndicator());
             }
             if(snapshot.data!.docs.isEmpty){
-              return const Center(child: Text('No Data',style: TextStyle(fontSize: 20,color: Colors.white),),);
+              return const Center(child: Text('No Data',style: TextStyle(fontSize: 20,color: Colors.black),),);
             }
             return ListView(
               children: snapshot.data!.docs.map((DocumentSnapshot document) {
