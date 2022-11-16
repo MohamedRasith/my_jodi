@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:my_jodi/Dashboard.dart';
-import 'package:my_jodi/common_widgets/custom_spacer_widget.dart';
 import 'package:my_jodi/utils/constants.dart';
 import 'package:my_jodi/utils/fonts.dart';
 import 'package:my_jodi/utils/navigation.dart';
